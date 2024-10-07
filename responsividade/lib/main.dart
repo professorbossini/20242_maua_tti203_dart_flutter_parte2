@@ -27,7 +27,7 @@ class MeuLayoutResponsivo extends StatelessWidget{
       body: LayoutBuilder(
         builder: (context, constraints){
           return constraints.maxWidth <= 768 ?
-            const Text ('Pequeno') :
+            MobileLayout() :
             const Text ('Grande');
         },
       ),
@@ -55,6 +55,31 @@ class MobileLayoutState extends State <MobileLayout>
 
   @override
   Widget build(BuildContext context) {
-    throw UnimplementedError(); 
+    return Column(
+      children: [
+        TabBar(
+          labelColor: Colors.black,
+          controller: tabController,
+          tabs: const[ Tab(text: "Aba 1"), Tab(text: "Aba 2")]
+        ),
+        Expanded(
+          child: TabBarView(
+            controller: tabController,
+            children: const [
+              Center(
+                child: Text('Conteúdo da primeira aba')
+              ),
+              Center(
+                child: Text('Conteúdo da segunda aba')
+              )
+            ],
+          )
+        )
+      ],
+    );
   }
 }
+
+// class WebLayout extends StatefulWidget{
+
+// }
