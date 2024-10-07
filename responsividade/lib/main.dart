@@ -28,7 +28,7 @@ class MeuLayoutResponsivo extends StatelessWidget{
         builder: (context, constraints){
           return constraints.maxWidth <= 768 ?
             MobileLayout() :
-            const Text ('Grande');
+            WebLayout();
         },
       ),
     );  
@@ -80,6 +80,34 @@ class MobileLayoutState extends State <MobileLayout>
   }
 }
 
-// class WebLayout extends StatefulWidget{
+class WebLayout extends StatefulWidget{
+  @override
+  State<StatefulWidget> createState() {
+    return WebLayoutState();
+  }
+}
 
-// }
+class WebLayoutState extends State <WebLayout>{
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        Expanded(
+          child: Card(
+            child: Center(
+              child: Text('Conteúdo da primeira aba')
+            )
+          ),
+        ),
+        Expanded(
+          child: Card(
+            child: Center(
+              child: Text('Conteúdo da segunda aba')
+            )
+          )
+        )
+      ],
+    );    
+  }  
+}
