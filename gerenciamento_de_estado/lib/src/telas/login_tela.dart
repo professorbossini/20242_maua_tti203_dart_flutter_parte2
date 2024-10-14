@@ -11,7 +11,13 @@ class LoginTela extends StatelessWidget{
           passwordField(),
           Container(
             margin: EdgeInsets.only(top: 12.0),
-            child: submitButton()
+            child: Row(
+              children: [
+                Expanded(
+                  child: submitButton(),
+                )
+              ],
+            )
           )
         ],
       ),
