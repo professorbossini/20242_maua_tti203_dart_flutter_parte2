@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../blocs/bloc.dart';
 class LoginTela extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
@@ -29,12 +29,21 @@ class LoginTela extends StatelessWidget{
   //1. restringir o teclado para que ele seja apropriado para a digitação de e-mail
   //2. Exibir uma dica instruindo o usuário a digitar o seu e-mail
   Widget emailField(){
-    return TextField(
-      keyboardType: TextInputType.emailAddress,
-      decoration: InputDecoration(
-        hintText: 'seu@email.com',
-        labelText: 'Digite seu e-mail'
-      ),
+    return StreamBuilder(
+      stream: bloc.email,
+      builder: (context, snapshot){
+        return TextField(
+          // onChanged: bloc.changeEmail
+          onChanged: (valorDigitado){
+            bloc.changeEmail(valorDigitado);
+          },
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            hintText: 'seu@email.com',
+            labelText: 'Digite seu e-mail'
+          ),
+        );
+      },
     );
   }
   //3. Escrever um método semelhante ao método emailField que produz um Widget próprio para a exibição de um campo para senha
