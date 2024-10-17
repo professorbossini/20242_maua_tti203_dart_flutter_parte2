@@ -48,12 +48,19 @@ class LoginTela extends StatelessWidget{
   }
   //escrever novo método que produz um campo próprio para senha
   Widget passwordField(){
-    return TextField(
-      obscureText: true,
-      decoration: InputDecoration(
-        hintText: 'Senha',
-        labelText: 'Senha'
-      ),
+    return StreamBuilder(
+      stream: bloc.password, 
+      builder: (context, AsyncSnapshot <String> snapshot){
+        return TextField(
+          onChanged: bloc.changePassword,
+          obscureText: true,
+          decoration: InputDecoration(
+            hintText: 'Senha',
+            labelText: 'Senha',
+            errorText: snapshot.hasError ? snapshot.error.toString() : null
+          ),
+        );
+      }
     );
   }
   //escrever novo método que produz um botão

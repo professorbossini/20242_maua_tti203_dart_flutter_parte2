@@ -8,7 +8,7 @@ class Bloc with Validators{
 
   Stream<String> get email => _emailController.stream.transform(validateEmail);
 
-  Stream<String> get password => _passwordController.stream.(validatePassword);
+  Stream<String> get password => _passwordController.stream.transform(validatePassword);
 
   Function(String) get changeEmail => _emailController.sink.add;
 
