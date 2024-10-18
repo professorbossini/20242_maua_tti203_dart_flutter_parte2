@@ -31,7 +31,7 @@ class LoginTela extends StatelessWidget{
   Widget emailField(){
     return StreamBuilder(
       stream: bloc.email,
-      builder: (context, snapshot){
+      builder: (context, AsyncSnapshot <String> snapshot){
         return TextField(
           // onChanged: bloc.changeEmail
           onChanged: (valorDigitado){
@@ -40,7 +40,11 @@ class LoginTela extends StatelessWidget{
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             hintText: 'seu@email.com',
-            labelText: 'Digite seu e-mail'
+            labelText: 'Digite seu e-mail',
+            //se tem erro, mosdtrar o erro, senão, não mostrar nada
+            //use um operador ternário
+            // errorText: snapshot.hasError ? snapshot.error.toString() : null
+            errorText: snapshot.error?.toString()
           ),
         );
       },
@@ -48,13 +52,23 @@ class LoginTela extends StatelessWidget{
   }
   //3. Escrever um método semelhante ao método emailField que produz um Widget próprio para a exibição de um campo para senha
   Widget passwordField(){
-    return TextField(
-      obscureText: true,
-      decoration: InputDecoration(
-        hintText: 'Senha',
-        labelText: 'Digite sua senha'
-      ),
+    return StreamBuilder(
+      stream: bloc.password,
+      builder: (context,  AsyncSnapshot <String> snapshot){
+        return TextField(
+          onChanged: bloc.changePassword,
+          obscureText: true,
+          decoration: InputDecoration(
+            hintText: 'Senha',
+            labelText: 'Digite sua senha',
+            errorText: snapshot.error?.toString()
+          ),
+        );
+      },
     );
+    
+    
+    
   }
   //5. implementar um método para produzir um botão
   Widget submitButton(){
