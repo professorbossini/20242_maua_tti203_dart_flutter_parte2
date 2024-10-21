@@ -12,9 +12,11 @@ mixin Validators{
       //adicionar a mensagem de erro "Email inválido" ao sink
       if (EmailValidator.validate(email)){
         sink.add(email);
+        print(email);
       }
       else{
         sink.addError('E-mail inválido');
+        print('erro: $email');
       }
     }
   );

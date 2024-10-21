@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import '../blocs/bloc.dart';
 class LoginTela extends StatelessWidget{
 
   @override
@@ -20,25 +20,40 @@ class LoginTela extends StatelessWidget{
   }
 
   Widget emailField(){
-    return TextField(
-      //1. restringir o tipo do teclado para que ele suba de maneira apropriada para a digitação de e-mails
-      keyboardType: TextInputType.emailAddress,
-      //2. exibir um texto explicando para o usuário o que ele deve digitar, ou seja, uma espécie de placeholder
-      decoration: InputDecoration(
-        hintText: 'seu@email.com',
-        labelText: "Digite seu e-mail"
-      ),
+    return StreamBuilder(
+      stream: bloc.email,
+      builder: (context, AsyncSnapshot <String> snapshot){
+        return TextField(
+          onChanged: bloc.changeEmail,
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            hintText: 'seu@email.com',
+            labelText: "Digite seu e-mail",
+            //use o operador ternário, para verificar se "tem erro" antes de mostrar. se tiver, mostre, senão, coloque um null
+            errorText: snapshot.hasError ? snapshot.error.toString(): null
+          ),
+        );
+    // pristine: puro, não tocado, imaculado
+      },
     );
   }
 
+  //faça a validação para o campo de senha também
+  //desafio: usar o operador ?.
   Widget passwordField(){
-    return TextField(
-      //ocultar o texto, fazendo as bolinhas aparecerem quando o usuário digita
-      obscureText: true,
-      decoration: InputDecoration(
-        hintText: 'senha',
-        labelText: "Digite sua senha"
-      ),
+    return StreamBuilder(
+      stream: bloc.password,
+      builder: (context, AsyncSnapshot <String> snapshot){
+        return TextField(
+          onChanged: bloc.changePassword,
+          obscureText: true,
+          decoration: InputDecoration(
+            hintText: 'senha',
+            labelText: "Digite sua senha",
+            errorText: snapshot.error?.toString()
+          ),
+        );
+      },
     );
   }
 
