@@ -1,21 +1,32 @@
 import 'package:flutter/material.dart';
 import '../blocs/bloc.dart';
+import '../blocs/provider.dart';
 class LoginTela extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
+    final bloc = Provider.of(context);
     return Container(
       margin: const EdgeInsets.all(20.0),
       child: Column(
         children: [
           //encaixar os widgets de email e senha aqui
-          emailField(),
-          passwordField(),
-          submitButton()
+          emailField(bloc),
+          passwordField(bloc),
+          Container(
+            margin: EdgeInsets.only(top: 12.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: submitButton(bloc)
+                )
+              ],
+            ),
+          )
         ],
       ),
     );
   }
-  Widget emailField(){
+  Widget emailField(Bloc bloc){
     return StreamBuilder(
       stream: bloc.email, //descobrir quem é
       builder:(context, AsyncSnapshot<String> snapshot){
@@ -47,7 +58,7 @@ class LoginTela extends StatelessWidget{
     // );
   }
   //escrever novo método que produz um campo próprio para senha
-  Widget passwordField(){
+  Widget passwordField(Bloc bloc){
     return StreamBuilder(
       stream: bloc.password, 
       builder: (context, AsyncSnapshot <String> snapshot){
@@ -64,22 +75,16 @@ class LoginTela extends StatelessWidget{
     );
   }
   //escrever novo método que produz um botão
-  Widget submitButton(){
-    return Container(
-      margin: EdgeInsets.only(top: 12.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: ElevatedButton(
-                onPressed: (){}, 
-                child: Text('Login')
-            ),
-          )
-        ],
-      )
+  Widget submitButton(Bloc bloc){
+      return StreamBuilder(
+        stream: bloc.emailAndPasswordOK, 
+        builder: (context, AsyncSnapshot <bool> snapshot){
+          return ElevatedButton(
+            onPressed: snapshot.hasData ? (){} : null, 
+            child: Text('Ok')
+          );
+        }
+      );
       
-      
-      
-    );
   }
 }
