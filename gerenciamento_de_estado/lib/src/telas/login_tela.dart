@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import '../blocs/bloc.dart';
+import '../blocs/provider.dart';
 class LoginTela extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
+    final bloc = Provider.of(context);
     return Container(
       margin: const EdgeInsets.all(20.0),
       child: Column(
         //4. Encaixar os dois métodos, ou seja, exibir os dois campos
         children: [
-          emailField(),
-          passwordField(),
+          emailField(bloc),
+          passwordField(bloc),
           Container(
             margin: EdgeInsets.only(top: 12.0),
             child: Row(
               children: [
                 Expanded(
-                  child: submitButton()
+                  child: submitButton(bloc)
                 )
               ],
             ),
@@ -28,7 +30,7 @@ class LoginTela extends StatelessWidget{
 
   //1. restringir o teclado para que ele seja apropriado para a digitação de e-mail
   //2. Exibir uma dica instruindo o usuário a digitar o seu e-mail
-  Widget emailField(){
+  Widget emailField(Bloc bloc){
     return StreamBuilder(
       stream: bloc.email,
       builder: (context, AsyncSnapshot <String> snapshot){
@@ -51,7 +53,7 @@ class LoginTela extends StatelessWidget{
     );
   }
   //3. Escrever um método semelhante ao método emailField que produz um Widget próprio para a exibição de um campo para senha
-  Widget passwordField(){
+  Widget passwordField(Bloc bloc){
     return StreamBuilder(
       stream: bloc.password,
       builder: (context,  AsyncSnapshot <String> snapshot){
@@ -66,15 +68,17 @@ class LoginTela extends StatelessWidget{
         );
       },
     );
-    
-    
-    
   }
   //5. implementar um método para produzir um botão
-  Widget submitButton(){
-    return ElevatedButton(
-      onPressed: (){}, 
-      child: Text('Login')
+  Widget submitButton(Bloc bloc){
+    return StreamBuilder(
+      stream: bloc.email,
+      builder: (context, AsyncSnapshot <String> snapshot){
+        return ElevatedButton(
+          onPressed: (){}, 
+          child: Text('Login')
+        );
+      },
     );
   }
 }
