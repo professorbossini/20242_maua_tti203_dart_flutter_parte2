@@ -17,7 +17,8 @@ class LoginTela extends StatelessWidget{
             child: Row(
               children: [
                 Expanded(
-                  child: submitButton(bloc)
+                  // child: submitButton(bloc)
+                  child: Text('teste para a aula')
                 )
               ],
             ),
