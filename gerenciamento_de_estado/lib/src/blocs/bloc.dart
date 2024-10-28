@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:rxdart/rxdart.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
 import 'package:gerenciamento_de_estado/src/blocs/validators.dart';
 
 class Bloc with Validators{
-  final _emailController = StreamController <String>.broadcast();
-  final _passwordController = StreamController <String>.broadcast();
+  final _emailController = BehaviorSubject <String>();
+  final _passwordController = BehaviorSubject <String>();
 
   //email em vez de falar emailController.stream
   Stream <String> get email => _emailController.stream.transform(validateEmail);
@@ -26,6 +27,22 @@ class Bloc with Validators{
 
   //changePassword em vez de passwordStream.sink.add
   Function(String) get changePassword => _passwordController.sink.add;
+
+  void submitForm(){
+    final email = _emailController.value;
+    final password = _passwordController.value;
+    //print('$email $password');
+    Fluttertoast.showToast(
+      msg: 'E-mail: $email, Senha: $password',
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.CENTER,
+      timeInSecForIosWeb: 1,
+      backgroundColor: Colors.blue,
+      textColor: Colors.white,
+      fontSize: 16
+    );
+
+  }
   
   //descartar
   void dispose(){
