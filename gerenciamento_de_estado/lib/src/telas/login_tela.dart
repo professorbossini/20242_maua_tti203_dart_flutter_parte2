@@ -1,50 +1,73 @@
 import 'package:flutter/material.dart';
-
+import '../blocs/bloc.dart';
+import '../blocs/provider.dart';
 class LoginTela extends StatelessWidget{
+
   @override
   Widget build(BuildContext context) {
+    final bloc = Provider.of(context);
     return Container(
       margin: EdgeInsets.all(20.0),
       child: Column(
         children: [
-          emailField(),
-          passwordField(),
+          emailField(bloc),
+          passwordField(bloc),
           Container(
             margin: EdgeInsets.only(top: 12.0),
-            child: submitButton()
+            child: submitButton(bloc)
           )
         ],
       ),
     );
   }
 
-  Widget emailField(){
-    return TextField(
-      //1. restringir o tipo do teclado para que ele suba de maneira apropriada para a digitação de e-mails
-      keyboardType: TextInputType.emailAddress,
-      //2. exibir um texto explicando para o usuário o que ele deve digitar, ou seja, uma espécie de placeholder
-      decoration: InputDecoration(
-        hintText: 'seu@email.com',
-        labelText: "Digite seu e-mail"
-      ),
+  Widget emailField(Bloc bloc){
+    return StreamBuilder(
+      stream: bloc.email,
+      builder: (context, AsyncSnapshot <String> snapshot){
+        return TextField(
+          onChanged: bloc.changeEmail,
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            hintText: 'seu@email.com',
+            labelText: "Digite seu e-mail",
+            //use o operador ternário, para verificar se "tem erro" antes de mostrar. se tiver, mostre, senão, coloque um null
+            errorText: snapshot.hasError ? snapshot.error.toString(): null
+          ),
+        );
+    // pristine: puro, não tocado, imaculado
+      },
     );
   }
 
-  Widget passwordField(){
-    return TextField(
-      //ocultar o texto, fazendo as bolinhas aparecerem quando o usuário digita
-      obscureText: true,
-      decoration: InputDecoration(
-        hintText: 'senha',
-        labelText: "Digite sua senha"
-      ),
+  //faça a validação para o campo de senha também
+  //desafio: usar o operador ?.
+  Widget passwordField(Bloc bloc){
+    return StreamBuilder(
+      stream: bloc.password,
+      builder: (context, AsyncSnapshot <String> snapshot){
+        return TextField(
+          onChanged: bloc.changePassword,
+          obscureText: true,
+          decoration: InputDecoration(
+            hintText: 'senha',
+            labelText: "Digite sua senha",
+            errorText: snapshot.error?.toString()
+          ),
+        );
+      },
     );
   }
 
-  Widget submitButton(){
-    return ElevatedButton(
-      onPressed : (){}, 
-      child: Text('Login')
+  Widget submitButton(Bloc bloc){
+    return StreamBuilder(
+      stream: bloc.emailPasswordAreOk,
+      builder: (context, AsyncSnapshot <bool> snapshot){
+        return ElevatedButton(
+          onPressed : snapshot.hasData ? (){} : null, 
+          child: Text('Login')
+        );
+      }
     );
   }
 }
