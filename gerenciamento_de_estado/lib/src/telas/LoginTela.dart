@@ -80,7 +80,7 @@ class LoginTela extends StatelessWidget{
         stream: bloc.emailAndPasswordOK, 
         builder: (context, AsyncSnapshot <bool> snapshot){
           return ElevatedButton(
-            onPressed: snapshot.hasData ? (){} : null, 
+            onPressed: snapshot.hasData ? bloc.submitForm : null, 
             child: Text('Ok')
           );
         }
