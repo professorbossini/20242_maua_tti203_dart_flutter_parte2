@@ -17,8 +17,8 @@ class LoginTela extends StatelessWidget{
             child: Row(
               children: [
                 Expanded(
-                  // child: submitButton(bloc)
-                  child: Text('teste para a aula')
+                  child: submitButton(bloc)
+                  // child: Text('teste para a aula')
                 )
               ],
             ),
@@ -73,10 +73,10 @@ class LoginTela extends StatelessWidget{
   //5. implementar um método para produzir um botão
   Widget submitButton(Bloc bloc){
     return StreamBuilder(
-      stream: bloc.email,
-      builder: (context, AsyncSnapshot <String> snapshot){
+      stream: bloc.emailAndPasswordAreOk,
+      builder: (context, AsyncSnapshot <bool> snapshot){
         return ElevatedButton(
-          onPressed: (){}, 
+          onPressed: snapshot.hasData ? bloc.submitForm : null, 
           child: Text('Login')
         );
       },
